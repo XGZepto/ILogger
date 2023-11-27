@@ -12,9 +12,9 @@ async def test_write_log(log_component):
     log_component.start()
     with patch('builtins.open', new_callable=MagicMock) as mock_open:
         await log_component.write("Test message")
+        await log_component.shutdown(wait=True)
         mock_open.assert_called_once()  # Assert that a file was attempted to be opened
-
-    await log_component.shutdown(wait=True)
+    
 
 # @pytest.mark.asyncio
 # async def test_file_rotation(log_component):
