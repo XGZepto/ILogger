@@ -1,3 +1,7 @@
+# Note:
+
+There's some async issues I haven't figured out with pytest yet.
+
 ## To use logComponent.py:
 
 - Import the module
