@@ -32,16 +32,18 @@ class LogComponent(ILog):
                     self._stop_event.set()
                     break
 
-                if self.current_log_file is None or datetime.datetime.now().date() != self.current_log_file_date:
+                if self.current_log_file is None or self.current_log_file.name != self._get_log_file_name():
                     if self.current_log_file is not None:
                         self.current_log_file.close()
-                    self.current_log_file_date = datetime.datetime.now().date()
                     self.current_log_file = open(self._get_log_file_name(), 'a')
 
                 try:
                     print(message, file=self.current_log_file)  # Write to log file
                 except Exception as e:
                     print(f"Error writing log: {e}")
+
+    async def flush(self):
+        await self.log_queue.join()
 
     async def write(self, message: str):
         await self.log_queue.put(message)
